@@ -200,7 +200,7 @@ kubectl delete peeringdialer dc1
 kubectl delete exportedservices default
 kubectl delete serviceintentions dc1-public-api-to-dc2-products-api
 
-
+https://developer.hashicorp.com/consul/tutorials/get-started-kubernetes/kubernetes-gs-service-mesh
 =================%%%%%%%%%%%%%%%%%%=================
 Get the Acl token
   kubectl get secrets/consul-bootstrap-acl-token  --template={{.data.token}} -n consul| base64 -d
