@@ -1,0 +1,75 @@
+global:
+  name: consul
+  image: "hashicorp/consul:1.15.7"  # if use Enterprise `hashicorp/consul-enterprise:1.15.7-ent`
+  imageK8S: "hashicorp/consul-k8s-control-plane:1.1.7"
+  imageConsulDataplane: "hashicorp/consul-dataplane:1.1.6"
+  # -- start enable Enterprise features --
+  #enterpriseLicense:
+  #  secretKey: "key"
+  #  secretName: "consul-ent-license"
+      #enableLicenseAutoload: false
+  # -- end enable Enterprise features --
+  datacenter: "ope-research"
+  peering:
+    enabled: true
+  tls:
+    enabled: true # mandatory for cluster peering
+    enableAutoEncrypt: true
+    verify: true
+  acls:
+    manageSystemACLs: true
+  gossipEncryption:
+    autoGenerate: true
+  # -- start enable enterprise namespace feature --
+  #enableConsulNamespaces: true
+  # -- end enable enterprise namespace feature --
+dns:
+ enabled: true
+ enableRedirection: true
+
+server:
+  enabled: true
+  replicas: 1
+  bootstrapExpect: 1
+  extraConfig: |
+    {
+      "log_level": "ERROR"
+    }
+
+connectInject:
+  enabled: true
+    #default: true
+  transparentProxy:
+    defaultEnabled: true
+  disruptionBudget:
+    enabled: true
+    #k8sAllowNamespaces: ["app", "dc2"]
+
+  # -- start enable enterprise feature (mirroring k8s) --
+  #consulNamespaces:
+  #  mirroringK8S: true
+  # -- end enable enterprise feature (mirroring k8s) --
+
+meshGateway:
+  enabled: true # mandatory for k8s cluster peering
+  replicas: 1
+  wanAddress:
+    source: Static
+    # add the FQDN of the mesh gateway
+    static: "dns-name"
+  service:
+    type: ClusterIP
+
+controller:
+  enabled: true
+
+ui:
+  enabled: true
+  service:
+    enabled: true
+    type: LoadBalancer
+    annotations: |
+      service.beta.kubernetes.io/aws-load-balancer-type: "external"
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"

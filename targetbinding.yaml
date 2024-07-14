@@ -1,0 +1,20 @@
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding 
+metadata:
+  name: consul-mesh-gateway
+spec: 
+ networking: 
+   ingress:
+     - from:
+       - ipBlock:
+           cidr: 10.0.64.0/20
+       - ipBlock:
+           cidr: 10.0.80.0/20
+       - ipBlock:
+           cidr: 10.0.48.0/20
+       ports:
+         - port: 8443
+ serviceRef:
+  name: consul-mesh-gateway
+  port: 443
+ targetGroupARN: arn:aws:elasticloadbalancing:us-east-1:975049****:targetgroup/ent-tg/5****
