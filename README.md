@@ -228,3 +228,6 @@ kubectl exec --namespace=consul -it --context=dc1 consul-server-0 \
 kubectl exec --namespace=consul -it consul-server-0 -- curl --cacert /consul/tls/ca/tls.crt --header "X-Consul-Token: " "https://127.0.0.1:8501/v1/peering/dc2" | jq
 
 =================%%%%%%%%%%%%%%%%%%=================
+
+Install the Consul
+helm install -n consul eks hashicorp/consul --version 1.1.11 --values consul-ent-values.yaml --debug
